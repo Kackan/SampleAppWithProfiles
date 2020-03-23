@@ -7,34 +7,22 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @ConfigurationProperties(prefix = "vat")
 @Profile("plus")
-public class ShopPlus implements Shop{
+public class ShopPlus extends ShopBasic{
 
     private double bookFruitVegetable;
     private double newspaper;
     private double seaFood;
 
-    private List<Product> products;
     private double sum;
 
-    @EventListener(ApplicationReadyEvent.class)
+
     @Override
-    public void fillShop()
-    {
-        products=new ArrayList<>();
-        products.add(new Product("Books", getRandomPrice()));
-        products.add(new Product("SeaFood",getRandomPrice()));
-        products.add(new Product("Vegetables",getRandomPrice()));
-        products.add(new Product("Fruits",getRandomPrice()));
-        products.add(new Product("Newspapers",getRandomPrice()));
-
-        System.out.println("PLUS");
-
+    public void toPay(List<Product> products) {
 
         products.
                 stream()
@@ -61,17 +49,8 @@ public class ShopPlus implements Shop{
                     }
 
                 });
+        System.out.println("Price with vat "+String.format("%.2f",sum));
 
-
-        System.out.println("Sum(with vat): "+String.format("%.2f",sum));
-    }
-
-    @Override
-    public double getRandomPrice() {
-        double min = 50;
-        double max = 300;
-        double price = (Math.random() * ((max - min) + 1)) + min;
-        return price;
     }
 
     public double getBookFruitVegetable() {
@@ -96,5 +75,13 @@ public class ShopPlus implements Shop{
 
     public void setSeaFood(double seaFood) {
         this.seaFood = seaFood;
+    }
+
+    public double getSum() {
+        return sum;
+    }
+
+    public void setSum(double sum) {
+        this.sum = sum;
     }
 }
