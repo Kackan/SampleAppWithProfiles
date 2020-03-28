@@ -2,9 +2,9 @@ package com.kackan.zad_dom_tydz2.entity;
 
 public class Product {
 
-    String name;
+    private String name;
 
-    double price;
+    private double price;
 
     public Product() {
     }
